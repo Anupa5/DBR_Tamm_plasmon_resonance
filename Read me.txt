@@ -8,14 +8,15 @@
 
 ##  Description
 
-This MATLAB script simulates the reflectivity spectrum of a 1D Distributed Bragg Reflector (DBR) on a glass substrate that supports **optical Tamm plasmon states** (TM polarization).  
-It uses the transfer matrix method (TMM) and calculates the reflection from a multilayer stack composed of alternating SiO₂ and Ta₂O₅ layers. and at the
+This MATLAB script simulates the reflectivity spectrum of a one-dimensional Distributed Bragg Reflector (DBR) on a glass substrate that supports optical Tamm plasmon states under TM polarization. Optical Tamm plasmonics is a relatively new and evolving field, with many aspects still under investigation. To provide a basic introduction to the phenomenon, this script demonstrates how to calculate the reflectivity spectrum using the transfer matrix method (TMM). The multilayer structure consists of alternating layers of SiO₂ and Ta₂O₅, with a 40 nm silver (Ag) film at the interface with the DBR, enabling the emergence of Tamm plasmon states
 
 ---
 
 ## Output
 
-The simulation demonstrates the photonic bandgap of the DBR, which shows the range where this DBR acts as a perfect reflector. The second code shows the **existence of a Tamm plasmon resonance** — a narrow dip in reflectivity inside the photonic bandgap center at the normal incidence of the TM polarized light. Optical Tamm plasmon resonance(also known as Tamm plasmon-polaritons) are special optical surface states that occur at the interface between a metal and a photonic crystal (typically a Distributed Bragg Reflector, or DBR). They are the photonic analogs of electronic Tamm states, which exist at the surface of a truncated periodic potential in solid-state physics.
+The simulation (DBR_competition.m) illustrates the photonic bandgap of the DBR, highlighting the spectral range where the structure behaves as a near-perfect reflector. The second code (Tamm_resonance_competition.m) reveals the presence of a Tamm plasmon resonance—observed as a sharp dip in reflectivity at the center of the photonic bandgap under normal incidence of TM-polarized light. Optical Tamm plasmon resonances (also known as Tamm plasmon-polaritons) are unique optical surface states that arise at the interface between Ag and DBR. They are the photonic counterparts of electronic Tamm states, which appear at the surface of a truncated periodic potential in solid-state physics. These resonances have promising applications in optical sensing, lasing, filtering, and high-performance mirrors.
+
+ 
 
 ---
 
