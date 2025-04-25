@@ -1,0 +1,78 @@
+% =========================================================================
+% Matrix method for understanding Optical Tamm State (TM mode)
+% Author: Anupa
+% University of Twente | Code Verification Competition 2025
+% Description: Calculates reflectivity spectrum using transfer matrix method
+% =========================================================================
+
+clear all;
+c = 3e8; mu0 = 4*pi*1e-7;
+%Temp_1=273+025; % operating temp in  kelvin
+
+N = 15;                    % No. of unit cells on either side of the core ==========================
+lam_cen = 0.600;           % Central wavelength in the bandgap (in microns)
+[no] = n_Ta2O5(lam_cen);n1c = no;  % Refractive index of layer 1 (Teflon in this case)
+n2c = n_SiO2(lam_cen);             % Refractive index of layer 2 (Silica in this case)
+% n2c = n_SiO2_2(lam_cen,Temp_1-273); 
+da = 5.0000;                   % Substrate thickness
+na = 1.000;                   % Analyte refractive index ==========
+
+
+theta = 89.9;           % Angle of incidence (with respect to the surface of ns) % in degrees
+d1 = lam_cen/(4*n1c*sind(theta));  %0.110;%0.060;%lam_cen/(4*n1c*sind(theta));         % Thickness of layers 1 & 2 =============
+d2 = lam_cen/(4*n2c*sind(theta)); %0.050;%0.125;%lam_cen/(4*n2c*sind(theta)); 
+dm = 0.040;            % Metal thickness (silver in this case)=============
+
+Temp_1=270+185; % operating temp in kelvin
+% =====================================================================
+lambda = linspace(0.40,1.0,5000); m = 0;
+
+
+for cnt10 = 1:length(lambda)
+    lam = lambda(cnt10);                    % Wavelength of operation in "microns"
+    ko = 2*pi/lam;                 % Free space wavenumber =============
+% =======================================================================
+    [no] = n_Ta2O5(lam);
+    n2 = no;                     % Refractive index of layer 1 (Teflon, in the present case)
+    n1 = n_SiO2(lam);            % Refractive index of layer 2 (Silica, in the present case)
+
+    ns = n_BK7(lam);                     % BRW Core refractive index
+
+    [nm] = temp_ag_eps22(lam*1e-6,Temp_1);   % Extracting wavelength 
+    beta = ko*ns*cosd(theta);
+    ka = sqrt((ko*na)^2-beta^2);              
+
+    k1 = sqrt((ko*n1)^2-beta^2);            % k-vector of the analyte layer 1
+    k2 = sqrt((ko*n2)^2-beta^2);            % k-vector of the analyte layer 2
+    ks = sqrt((ko*ns)^2-beta^2);            % k-vector of the analyte substrate
+    km = sqrt((ko*nm)^2-beta^2);            % k-vector of the analyte metal
+    
+    %Transfer matrices at different interfaces
+    
+    Ss = [1/2*(1+n2^2/ns^2*ks/k2)*exp(-1i*k2*d2) 1/2*(1-n2^2/ns^2*ks/k2)*exp(-1i*k2*d2);1/2*(1-n2^2/ns^2*ks/k2)*exp(1i*k2*d2) 1/2*(1+n2^2/ns^2*ks/k2)*exp(1i*k2*d2)];  % Matrix multiplication of each interface of substrate and layer 2
+    S2 = [1/2*(1+n2^2/n1^2*k1/k2)*exp(-1i*k2*d2) 1/2*(1-n2^2/n1^2*k1/k2)*exp(-1i*k2*d2);1/2*(1-n2^2/n1^2*k1/k2)*exp(1i*k2*d2) 1/2*(1+n2^2/n1^2*k1/k2)*exp(1i*k2*d2)];  % Matrix multiplication of each interface of layer 1 and layer 2
+    S1 = [1/2*(1+n1^2/n2^2*k2/k1)*exp(-1i*k1*d1) 1/2*(1-n1^2/n2^2*k2/k1)*exp(-1i*k1*d1);1/2*(1-n1^2/n2^2*k2/k1)*exp(1i*k1*d1) 1/2*(1+n1^2/n2^2*k2/k1)*exp(1i*k1*d1)];  % Matrix multiplication of each interface of layer 1 and layer 2
+  
+    %metal
+    Sm = [1/2*(1+nm^2/n2^2*k2/km)*exp(-1i*km*dm) 1/2*(1-nm^2/n2^2*k2/km)*exp(-1i*km*dm);1/2*(1-nm^2/n2^2*k2/km)*exp(1i*km*dm) 1/2*(1+nm^2/n2^2*k2/km)*exp(1i*km*dm)];  % Matrix multiplication of each interface of layer 1 and metal
+    %air
+    Sa = [1/2*(1+na^2/nm^2*km/ka)*exp(-1i*ka*da) 1/2*(1-na^2/nm^2*km/ka)*exp(-1i*ka*da);1/2*(1-na^2/nm^2*km/ka)*exp(1i*ka*da) 1/2*(1+na^2/nm^2*km/ka)*exp(1i*ka*da)];
+
+  
+    G = Sm*S1*(S2*S1)^(N-1)*S2*Ss;
+
+
+   m = m+1;
+   gL(m) = -G(2,1)/G(2,2); % modified one for incidence from metal side
+   R(m) = (abs(gL(m)))^2;
+    
+    
+end
+
+figure(1);plot(lambda*1e3,R,'b-', 'LineWidth', 2);hold on;
+xlabel('Wavelength (nm)', 'FontSize', 12);
+ylabel('Normalized reflectivity', 'FontSize', 12);
+xlim([400 1000]);
+ylim([0 1.1]);
+set(gca, 'FontSize', 12);
+saveas(gcf, 'Tamm_resonance.png');

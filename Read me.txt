@@ -1,0 +1,50 @@
+# Optical Tamm State Simulation in 1D Distributed Bragg Reflector
+
+**Author:** Anupa  
+**Institution:** University of Twente  
+**Competition:** Code Verification Competition 2025
+
+---
+
+##  Description
+
+This MATLAB script simulates the reflectivity spectrum of a 1D Distributed Bragg Reflector (DBR) on a glass substrate that supports **optical Tamm plasmon states** (TM polarization).  
+It uses the transfer matrix method (TMM) and calculates the reflection from a multilayer stack composed of alternating SiO₂ and Ta₂O₅ layers. and at the
+
+---
+
+## Output
+
+The simulation demonstrates the photonic bandgap of the DBR, which shows the range where this DBR acts as a perfect reflector. The second code shows the **existence of a Tamm plasmon resonance** — a narrow dip in reflectivity inside the photonic bandgap center at the normal incidence of the TM polarized light. Optical Tamm plasmon resonance(also known as Tamm plasmon-polaritons) are special optical surface states that occur at the interface between a metal and a photonic crystal (typically a Distributed Bragg Reflector, or DBR). They are the photonic analogs of electronic Tamm states, which exist at the surface of a truncated periodic potential in solid-state physics.
+
+---
+
+## 📂 Files Included
+
+- `DBR_competition.m`: Main simulation script1.
+  `Tamm_resonance_competition.m`  Main simulation script 2
+
+- `n_Ta2O5.m`, `n_SiO2.m`, `n_BK7.m`: Dispersion functions (that is, wavelength dependent).
+
+- `Tamm_resonance.png`: Resulting plot for quick preview .
+
+---
+
+##  How to Run
+
+1. Open `DBR_competition.m` in MATLAB.
+2. Run the script.
+3. Output is a reflectivity vs wavelength plot representing the photonic gap of the DBR.
+4. Open 'Tamm_resonance_competition.m' in MATLAB.
+5. Run the script.
+6. Output shows a reflectivity vs wavelength plot with a dip indicating the Tamm state.
+
+**Expected Runtime:** Under 20 seconds.
+
+---
+
+##  Dependencies
+
+- MATLAB R2020b or later (tested on R2022b)
+- No toolboxes required
+
